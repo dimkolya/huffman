@@ -1,0 +1,29 @@
+#pragma once
+
+#include "huffman_code.h"
+
+#include <ostream>
+
+struct buffered_writer {
+	explicit buffered_writer(std::ostream& source);
+
+	~buffered_writer();
+
+	void write(unsigned char c);
+
+	void write(const huffman_code& code);
+
+	void write(bool bit);
+
+private:
+	static const std::streamsize BUFFER_SIZE = 1024;
+
+	std::ostream& source;
+	std::streamsize written;
+	std::size_t written_bits;
+	unsigned char buffer[BUFFER_SIZE];
+
+	void write_zero_shift(unsigned char c);
+
+	void char_filled();
+};
